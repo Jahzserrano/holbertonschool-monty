@@ -1,7 +1,7 @@
 #include "monty.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+// #include <sys/types.h>
+// #include <sys/stat.h>
+// #include <fcntl.h>
 /**
  * main - Entry Point
  * 
@@ -12,7 +12,7 @@
 */
 int main(int argc, char **argv)
 {
-    FILE *monty_f = NULL;
+    FILE *monty_f;
     int exit_code = EXIT_SUCCESS;
 
     /* if argc is */

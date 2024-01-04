@@ -1,12 +1,22 @@
 #include "monty.h"
 
+
 /**
- * monty_runner -  A function that exucutes a Monty file
- * 
- * @monty_f: monty file
- * 
- * Return: EXIT_SUCCESS or EXIT_FAILURE
-*/
+ * free_tokens - Frees the global op_toks array of strings.
+ */
+void free_toks(void)
+{
+	size_t i = 0;
+
+	if (op_toks == NULL)
+		return;
+
+	for (i = 0; op_toks[i]; i++)
+		free(op_toks[i]);
+
+	free(op_toks);
+}
+
 
 void (*get_op_func(char *opcode))(stack_t**, unsigned int)
 {
@@ -25,6 +35,14 @@ void (*get_op_func(char *opcode))(stack_t**, unsigned int)
             return (op_funcs[i].f);        
     }
 }
+
+/**
+ * monty_runner -  A function that exucutes a Monty file
+ * 
+ * @monty_f: monty file
+ * 
+ * Return: EXIT_SUCCESS or EXIT_FAILURE
+*/
 int monty_runner(FILE *monty_f)
 {
 
@@ -38,12 +56,16 @@ int monty_runner(FILE *monty_f)
     /* loop */
     while (getline(&line, &len, monty_f) != -1)
     {
-        
+        line_number++;
+
+        /* op_toks global variable - holds a arr of opcodes*/
+
+        op_toks = strtow(line, DELIMS); /* strtow string to words - split the line into words */
+        op_func = get_op_func(op_toks[0]); /* get operation function - compares the command to a map of command and functions. Returns the matching func */
+        op_func(&stack, line_number); /* execute function */
+        free_toks(); /* free memory */
     }
 
-        /* get current_op from line */
-        /* get operation match with a list of string and functions then save function in a variable*/
-        /* run operation */
-        /* NEXT Line*/
+    free_stack(&stack); /* free memory */
 
 }
